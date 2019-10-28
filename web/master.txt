@@ -1,3 +1,5 @@
 master
 master2
 master3
+line form new master
+2line form new master
