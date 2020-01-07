@@ -1,4 +1,5 @@
 <?php
+//use yii\db\Connection;
 
 return [
     'class' => 'yii\db\Connection',

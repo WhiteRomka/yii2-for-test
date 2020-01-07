@@ -3,7 +3,7 @@ modules:
     enabled:
         - PhpBrowser:
              #- WebDriver:
-             url: http://yii2-for-test
+             url: http://yii2-for-test/
              #browser: chrome
         - Yii2:
             part: orm

@@ -4,7 +4,6 @@ $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
 $config = [
-
     'id' => 'basic',
     'language'=>'ru',
     'basePath' => dirname(__DIR__),
@@ -73,6 +72,7 @@ $config = [
             #'enableStrictParsing' => true, // в доке нужно для АПИ, но робит и без него
             'showScriptName' => false,
             'rules' => [
+                'films'=>'site/films',
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/v1/user',

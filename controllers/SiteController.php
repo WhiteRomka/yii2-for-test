@@ -4,18 +4,22 @@ namespace app\controllers;
 
 use app\components\actions\RomAction;
 use app\models\CommentForm;
+use app\models\Film;
 use app\models\Mindbox;
 use app\models\Post;
 use app\models\RegisterForm;
 use app\models\User;
+use Codeception\Module\MongoDb;
 use Yii;
 use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\ErrorAction;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use function foo\func;
 
 class SiteController extends Controller
 {
@@ -69,8 +73,18 @@ class SiteController extends Controller
                 'class' => 'yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
-            'rom'=>RomAction::class
+            'rom' => RomAction::class
         ];
+    }
+
+    public function actionFilms()
+    {
+       /* $cache = Yii::$app->cache;
+        $films = $cache->getOrSet('films', function(){
+            return $films = Film::find()->with('tags')->all();
+        }, 10);*/
+        $films = Film::find()->with('tags')->all();
+        return $this->render('films', ['films'=>$films]);
     }
 
     /**
@@ -80,11 +94,70 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $pattern = '#(pa){2}#';
-        $string = 'fgfdg papa fhgfdh';
 
-        debug(preg_match($pattern, $string)); die;
+        $str = 'Rom have eating apple!';
+       // $str = substr_replace($str, 'AAA', 0,3);
+       // $str = substr($str,0,3);
+       // echo $str;
+        $pat = '#\d{4}#';
+        $str = '1234 gggg 2456 3456 4567';
+        preg_match_all($pat, $str, $matches);
+        debug($matches); die;
+
         return $this->render('index');
+
+        $r = new \Redis();
+        $r->connect('localhost');
+        $r->hSet('person1', 'name', 'Vsya');
+        $r->hSet('person1', 'age', '23');
+        $p =  $r->hGet('person1', 'age');
+        debug($p); die;
+        return $this->render('index');
+
+        $json = '{"name": "Rom","surmane": "White"}';
+
+        $r = new \Redis();
+        $r->connect('localhost');
+        $r->set('rom', $json);
+        $var  =  $r->get('rom');
+        //debug(ArrayHelper::toArray(json_decode($var))); die;
+
+        $r->set(1,22);
+        $r->incr(1);
+        $r->incr(1);
+        //debug($r->get(1)); die;
+
+        $r->hSet('person1', 'name', 'Vsya');
+        $r->hSet('person1', 'age', '23');
+        //debug($r->hGet('person1', 'name')); die;
+
+       // $r->setex('rom',12,)
+        debug($r->hGetAll('person1'));
+        die;
+        /*
+         $r->sAdd('persons','Rom2');
+         $r->sAdd('persons', 'Dim2');
+         $r->sAdd('persons', 'Greg2');
+         $r->sAdd('persons', 'Sunny2');
+         $r->sAdd('persons', 'Роман');
+         $r->sAdd('persons', 'Ром', 'Конь', 'Гриб');
+         debug($r->sMembers('persons')); die;
+
+         $r->zAdd('people', 1980, 'Vasya');
+         $r->zAdd('people', 1977, 'Zina');
+         $r->zAdd('people', 1997, 'Kyzina');
+         $r->zAdd('people', 1980, 'Lara');
+         $r->zAdd('people', 1980, 'Yandex');
+         $r->zAdd('people', 1980, 'Aandex');
+         debug($r->zRange('people', 0, -1, 'true')); die;
+        */
+    }
+
+    public function actionMongo()
+    {
+       // phpinfo(); die;
+       // $connection = new \MongoDB('localhost');
+        $client = new \MongoClient();
     }
 
     /**

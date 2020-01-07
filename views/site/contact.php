@@ -47,7 +47,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     <?= $form->field($model, 'email') ?>
 
-                    <?= $form->field($model, 'subject') ?>
+                    <?php  //echo $form->field($model, 'subject') ?>
+                    <?= $form->field($model, 'subject')->dropDownList(['q','w','r'])?>
 
                     <?= $form->field($model, 'body')->textarea(['rows' => 6]) ?>
 
