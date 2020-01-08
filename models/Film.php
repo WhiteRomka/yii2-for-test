@@ -58,4 +58,15 @@ class Film extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Tag::class, ['id' => 'tag_id'])->viaTable('film_tag', ['film_id'=>'id']);
     }
+
+    public function getTagsForFilm()
+    {
+        $tags = '';
+        for ($i = 0; $i < count($this->tags); $i++) {
+            $tags .= (isset($this->tags[1 + $i])) ? $this->tags[$i]['name'].', ' : $this->tags[$i]['name'];
+        }
+        return $tags;
+    }
+
+
 }
