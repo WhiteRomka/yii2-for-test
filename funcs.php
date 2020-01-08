@@ -6,7 +6,7 @@ function debug($arr){
     echo "</pre>";
 }
 
-/*
+
 function myLog(){
     $fd = fopen( __DIR__ . "/tttttttttttttttttttttttttttt.txt", 'a') or die("не удалось создать файл");
     $str = "ok";
@@ -18,4 +18,3 @@ function myLog(){
     }
     die('bad');
 }
-*/
