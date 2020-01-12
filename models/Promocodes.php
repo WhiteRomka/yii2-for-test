@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use app\models\validators\ValidatorDateTime;
 
 /**
  * This is the model class for table "promocodes".
@@ -30,7 +31,9 @@ class Promocodes extends \yii\db\ActiveRecord
         return [
             [['started_at', 'expired_at'], 'date', 'format' =>'php:d-m-Y H:i'],
             [['started_at'], 'validateDateTime'],
+            //[['started_at'], ValidatorDateTime::class],
             [['promocode'], 'string', 'max' => 10],
+            ['dates', 'safe']
         ];
     }
 
@@ -42,8 +45,8 @@ class Promocodes extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'promocode' => 'Promocode',
-            'started_at' => 'Started At',
-            'expired_at' => 'Expired At',
+            'started_at' => 'Дата начала',
+            'expired_at' => 'Дата конца',
         ];
     }
 
@@ -59,14 +62,14 @@ class Promocodes extends \yii\db\ActiveRecord
     }
 
     /**
-     * @param string $formatTo
-     * @param $date
+     * @param string $formatTo Формат к которому нужно привести дату
+     * @param $date Дата в любом формате
      * @return false|string|null
      */
     public function formatDate(string $formatTo, $date) {
         if (is_int($date)) {
             $res = date($formatTo, $date);
-        }elseif (is_string($date)) {
+        } elseif (is_string($date)) {
             $res = date($formatTo, strtotime($date));
         } else {
             $res = null;
