@@ -9,6 +9,7 @@ use app\models\Mindbox;
 use app\models\Post;
 use app\models\RegisterForm;
 use app\models\User;
+use app\models\UserEmail;
 use Codeception\Module\MongoDb;
 use Yii;
 use yii\filters\AccessControl;
@@ -26,19 +27,19 @@ class SiteController extends Controller
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
+  /*  public function behaviors()
     {
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['logout'/*, 'about'*/],
+                'only' => ['logout', 'about'],
                 'rules' => [
                     [
                         'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
-                    /*[
+                    [
                     [
                         'actions' => ['about'],
                         'allow' => true,
@@ -48,7 +49,7 @@ class SiteController extends Controller
                         'actions' => ['contact'],
                         'allow' => true,
                         'roles' => ['admin'],
-                    ],*/
+                    ],
                 ],
             ],
             'verbs' => [
@@ -58,7 +59,7 @@ class SiteController extends Controller
                 ],
             ],
         ];
-    }
+    }*/
 
     /**
      * {@inheritdoc}
@@ -87,6 +88,52 @@ class SiteController extends Controller
         return $this->render('films', ['films'=>$films]);
     }
 
+
+    public function actionAjaxTest()
+    {
+        return $this->render('AjaxTest');
+    }
+
+    public function actionAjaxTestReceiver($id, $obj, $arr)
+    {
+        $this->layout= false;
+       // echo "dsfsf";
+       // var_dump($id);
+       // var_dump($obj);
+       // var_dump($arr);
+
+        $obj = json_decode($obj);
+        //debug($obj);
+
+        $arr = json_decode($arr);
+        //debug($arr);
+
+        return $this->render('_ajaxTestReceiver', compact('arr', 'obj'));
+    }
+
+
+    public function actionArrayWalk()
+    {
+        $a = [1,2,3,4,5];
+
+        array_walk($a, function(&$v){
+            //return $v *2;
+            //echo $v . "<br>";
+
+            $v = $v *2;
+
+        });
+
+        debug($a); die;
+    }
+
+    public function actionCheckbox()
+    {
+        //return $this->render('about');
+        return $this->render('checkbox');
+    }
+
+
     /**
      * Displays homepage.
      * @param string $aa
@@ -94,7 +141,6 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-
         $str = 'Rom have eating apple!';
        // $str = substr_replace($str, 'AAA', 0,3);
        // $str = substr($str,0,3);
@@ -302,5 +348,12 @@ class SiteController extends Controller
         }
 
         return $this->render('ajax', ['model' => $model]);
+    }
+
+
+    public function actionEmail()
+    {
+        $userEmail =new UserEmail();
+        $userEmail->autoValidation();
     }
 }

@@ -35,8 +35,16 @@ class FilmController extends Controller
      */
     public function actionIndex()
     {
+       if (Yii::$app->request->isAjax && Yii::$app->request->get()) {
+            $data = Yii::$app->request->get('aaa');
+            //debug(Yii::$app->request->get('aaa')); die;
+            debug(Yii::$app->request->queryParams); die;
+        }
+
         $searchModel = new FilmSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+       // debug(Yii::$app->request->get()); die;
 
         return $this->render('index', [
             'searchModel' => $searchModel,

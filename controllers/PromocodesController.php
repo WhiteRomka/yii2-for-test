@@ -84,7 +84,6 @@ class PromocodesController extends Controller
      */
     public function actionUpdate($id)
     {
-        //debug($_POST); die;
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {

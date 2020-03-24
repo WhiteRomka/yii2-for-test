@@ -11,6 +11,9 @@ use app\models\Film;
  */
 class FilmSearch extends Film
 {
+    public $tagsForFilm;
+
+
     /**
      * {@inheritdoc}
      */
@@ -18,7 +21,8 @@ class FilmSearch extends Film
     {
         return [
             [['id'], 'integer'],
-            [['name'], 'safe'],
+            [['name', 'tagsForFilm'], 'safe'],
+             [['a'], 'safe'],
         ];
     }
 
@@ -62,6 +66,17 @@ class FilmSearch extends Film
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name]);
+        if ($this->a === "Custom promocode") {
+            $query->andWhere('user_id_affiliate is null');
+        } if ($this->a === "Auto creating promocode") {
+                $query->andWhere('user_id_affiliate is not null');
+        }
+
+
+        $query->joinWith(['tags' => function ($q) {
+            //$q->where('tag.name LIKE "%' . $this->tagsForFilm . '%"');
+            $q->where("tag.name LIKE '%" . $this->tagsForFilm . "%'");
+        }]);
 
         return $dataProvider;
     }

@@ -19,6 +19,9 @@ $config = [
         'basket' => [
             'class' => 'app\modules\basket\Module',
         ],
+        'super-pay' => [
+            'class' => 'app\modules\superPay\Module',
+        ],
     ],
     'components' => [
         'request' => [
@@ -72,7 +75,9 @@ $config = [
             #'enableStrictParsing' => true, // в доке нужно для АПИ, но робит и без него
             'showScriptName' => false,
             'rules' => [
+                'invoices/index' => 'super-pay/invoices/index',
                 'films'=>'site/films',
+                'rom' => 'rom/default/index',
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/v1/user',

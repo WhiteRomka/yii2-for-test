@@ -27,7 +27,7 @@ class m190727_143124_create_post_table extends Migration
             'id',
             'SET NULL',
             'CASCADE'
-            );
+        );
     }
 
     /**

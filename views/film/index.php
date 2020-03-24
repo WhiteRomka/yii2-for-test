@@ -21,6 +21,15 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
+    <select class="form-control" name="FilmSearch[a]">
+        <option value=""></option>
+        <option value="Custom promocode" selected>Custom promocode</option>
+        <option value="Auto creating promocode">Auto creating promocode</option>
+    </select>
+
+    <input type="checkbox" id="myCheckbox" value="aaa">
+
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -36,12 +45,34 @@ $this->params['breadcrumbs'][] = $this->title;
                }
                 return $tags;
             }],*/
-            'tagsForFilm',
+            //'tagsForFilm',
+            ['attribute' =>'a', 'filter' => [ "Custom promocode"=>"Custom promocode", "Auto creating promocode"=>"Auto creating promocode" ]],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 
     <?php Pjax::end(); ?>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            $('#myCheckbox').change(function(e){
+                var isChecked = $('#myCheckbox').prop('checked');
+                var data;
+                if (isChecked) {
+                    data = 'checked';
+                } else {
+                    data = 'no';
+                }
+                $.get(
+                    '/film/index',
+                    {"aaa": data},
+                    function(data){
+                        console.log(data);
+                    }
+                )
+            })
+        });
+    </script>
 
 </div>

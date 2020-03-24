@@ -9,9 +9,13 @@ use Yii;
  *
  * @property int $id
  * @property string $name
+ * @property string $user_id_affiliate
  */
 class Film extends \yii\db\ActiveRecord
 {
+
+    public $a;
+
     /**
      * {@inheritdoc}
      */
@@ -28,6 +32,8 @@ class Film extends \yii\db\ActiveRecord
         return [
             [['name'], 'required'],
             [['name'], 'string', 'max' => 220],
+            //[['user_id_affiliate'], 'string', 'max' => 100],
+            [['user_id_affiliate'], 'safe'],
         ];
     }
 
