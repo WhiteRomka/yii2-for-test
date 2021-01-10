@@ -75,6 +75,7 @@ $config = [
             #'enableStrictParsing' => true, // в доке нужно для АПИ, но робит и без него
             'showScriptName' => false,
             'rules' => [
+                'ritmonexx'=>'site/ritmonexx',
                 'invoices/index' => 'super-pay/invoices/index',
                 'films'=>'site/films',
                 'rom' => 'rom/default/index',

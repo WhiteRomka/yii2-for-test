@@ -12,6 +12,7 @@ use app\models\User;
 use app\models\UserEmail;
 use Codeception\Module\MongoDb;
 use Yii;
+use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
@@ -88,7 +89,6 @@ class SiteController extends Controller
         return $this->render('films', ['films'=>$films]);
     }
 
-
     public function actionAjaxTest()
     {
         return $this->render('AjaxTest');
@@ -110,7 +110,6 @@ class SiteController extends Controller
 
         return $this->render('_ajaxTestReceiver', compact('arr', 'obj'));
     }
-
 
     public function actionArrayWalk()
     {
@@ -141,69 +140,37 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $str = 'Rom have eating apple!';
-       // $str = substr_replace($str, 'AAA', 0,3);
-       // $str = substr($str,0,3);
-       // echo $str;
-        $pat = '#\d{4}#';
-        $str = '1234 gggg 2456 3456 4567';
-        preg_match_all($pat, $str, $matches);
-        debug($matches); die;
-
         return $this->render('index');
-
-        $r = new \Redis();
-        $r->connect('localhost');
-        $r->hSet('person1', 'name', 'Vsya');
-        $r->hSet('person1', 'age', '23');
-        $p =  $r->hGet('person1', 'age');
-        debug($p); die;
-        return $this->render('index');
-
-        $json = '{"name": "Rom","surmane": "White"}';
-
-        $r = new \Redis();
-        $r->connect('localhost');
-        $r->set('rom', $json);
-        $var  =  $r->get('rom');
-        //debug(ArrayHelper::toArray(json_decode($var))); die;
-
-        $r->set(1,22);
-        $r->incr(1);
-        $r->incr(1);
-        //debug($r->get(1)); die;
-
-        $r->hSet('person1', 'name', 'Vsya');
-        $r->hSet('person1', 'age', '23');
-        //debug($r->hGet('person1', 'name')); die;
-
-       // $r->setex('rom',12,)
-        debug($r->hGetAll('person1'));
-        die;
-        /*
-         $r->sAdd('persons','Rom2');
-         $r->sAdd('persons', 'Dim2');
-         $r->sAdd('persons', 'Greg2');
-         $r->sAdd('persons', 'Sunny2');
-         $r->sAdd('persons', 'Роман');
-         $r->sAdd('persons', 'Ром', 'Конь', 'Гриб');
-         debug($r->sMembers('persons')); die;
-
-         $r->zAdd('people', 1980, 'Vasya');
-         $r->zAdd('people', 1977, 'Zina');
-         $r->zAdd('people', 1997, 'Kyzina');
-         $r->zAdd('people', 1980, 'Lara');
-         $r->zAdd('people', 1980, 'Yandex');
-         $r->zAdd('people', 1980, 'Aandex');
-         debug($r->zRange('people', 0, -1, 'true')); die;
-        */
     }
 
-    public function actionMongo()
+    public function actionT()
     {
-       // phpinfo(); die;
-       // $connection = new \MongoDB('localhost');
-        $client = new \MongoClient();
+
+        $query = Post::find();
+
+        $provider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'text' => SORT_ASC,
+                    //'title' => SORT_ASC,
+                ]
+            ],
+        ]);
+        $posts = $provider->getModels();
+        $pages =  $provider->getPagination();
+        return $this->render('t', [
+            'posts'=>$posts,
+            'pages' => $pages
+        ]);
+    }
+
+    public function actionRitmonexx()
+    {
+        return $this->render('ritmonexx');
     }
 
     /**
@@ -281,30 +248,6 @@ class SiteController extends Controller
         return $this->render('about');
     }
 
-  /* public function actionAddUser()
-    {
-        $count = 0;
-        for ($i = 1002; $i < 3000; $i++) {
-            $val = 'aaa'.$i;
-            $user = new User();
-            $user->username = $val;
-            $user->auth_key = $val;
-            $user->password_hash = $val;
-            $user->password_reset_token = $val;
-            $user->email = $val.'@'.$val.'.'.$val;
-            $user->created_at = time();
-            $user->updated_at = time();
-             if ($user->save() ){
-                 $count++;
-             }else {
-                 debug($user->errors);die;
-             }
-        }
-        echo $count; die;
-    }*/
-   //SELECT * FROM `user` WHERE auth_key = 'oXAZskjSAIzOqmwXNE-L-aA7wfMxJHyF' // 0.0023 s
-   //SELECT auth_key FROM `user`  // 0.0003 s
-
     public function actionTtt(){
 
         $res =  Mindbox::t();
@@ -314,26 +257,11 @@ class SiteController extends Controller
             echo "bad";
         }
         die();
-        //die('ttt');
     }
 
     public function actionAjax()
     {
-        /*$request = Yii::$app->request;
-        $p = $_POST;
-        $a= 1;
-        $c =1;
-
-        if ($request->isPost && isset($request['CommentForm'])) {
-            $comment = $request['CommentForm']['comment'] ?? null;
-            $email = $request['CommentForm']['email'] ?? null;
-
-            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-            return ['comment' => $comment, 'email' => $email];
-        }*/
-
         $model = new CommentForm();
-
         $request = Yii::$app->request;
         $p = $_POST;
         if ($request->isAjax) {
@@ -355,5 +283,9 @@ class SiteController extends Controller
     {
         $userEmail =new UserEmail();
         $userEmail->autoValidation();
+    }
+
+    public  function actionClassesJs() {
+        return $this->render('classes-js');
     }
 }

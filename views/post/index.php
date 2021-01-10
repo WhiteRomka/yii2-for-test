@@ -1,4 +1,12 @@
 <?php
+/*http://yii2-for-test/post/index?
+PostSearch[id]=
+&PostSearch[title]=s22
+&PostSearch[text]=
+&PostSearch[author_id]=
+&sort=text
+&page=2
+*/
 
 use yii\helpers\Html;
 use yii\grid\GridView;
